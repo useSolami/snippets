@@ -1,0 +1,17 @@
+{
+  "name": "grpc-pumpfun-copy-trade",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "solami": "^0.1.8",
+    "@pump-fun/pump-sdk": "^1.36.0",
+    "@solana/web3.js": "^1.98.0",
+    "bn.js": "^5.2.2",
+    "bs58": "^6.0.0"
+  }
+}

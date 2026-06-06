@@ -1,0 +1,13 @@
+{
+  "name": "websocket-solami-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "solami": "^0.1.8"
+  }
+}
