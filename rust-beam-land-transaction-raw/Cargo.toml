@@ -1,0 +1,19 @@
+[package]
+name = "beam-land-transaction-raw"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+solana-sdk = "3"
+solana-client = "3"
+solana-commitment-config = "3"
+solana-system-interface = { version = "3", features = ["bincode"] }
+solana-tls-utils = { version = "3", features = ["agave-unstable-api"] }
+quinn = "0.11"
+rustls = { version = "0.23", features = ["ring"] }
+bincode = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+dotenvy = "0.15"

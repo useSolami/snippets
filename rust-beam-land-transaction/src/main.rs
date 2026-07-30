@@ -1,7 +1,7 @@
 use std::env;
 use std::time::Duration;
 
-use solami::{build_tip_ix, system_instruction, Keypair, Transaction, VersionedTransaction};
+use solami::{Keypair, Transaction, VersionedTransaction, build_tip_ix, system_instruction};
 use solana_commitment_config::CommitmentConfig;
 use solana_sdk::signer::Signer;
 use tracing::{info, warn};
@@ -43,16 +43,38 @@ async fn beam_transaction() {
 
     let ixs = vec![
         system_instruction::transfer(&payer.pubkey(), &payer.pubkey(), 1),
-        build_tip_ix(&payer.pubkey(), 0.0001),
+        build_tip_ix(&payer.pubkey(), 0.0),
     ];
 
-    let tx = Transaction::new_signed_with_payer(
-        &ixs,
-        Some(&payer.pubkey()),
-        &[&payer],
-        blockhash,
-    );
+    let tx = Transaction::new_signed_with_payer(&ixs, Some(&payer.pubkey()), &[&payer], blockhash);
     let tx = VersionedTransaction::from(tx);
+
+    let balance = client
+        .get_balance(&payer.pubkey())
+        .await
+        .expect("failed to fetch balance");
+    info!(
+        payer = %payer.pubkey(),
+        lamports = balance,
+        sol = balance as f64 / 1_000_000_000.0,
+        "payer balance before sending"
+    );
+
+    info!("simulating transaction before beaming...");
+    let sim = client
+        .simulate_transaction(&tx)
+        .await
+        .expect("failed to simulate transaction")
+        .value;
+    if let Some(err) = sim.err {
+        warn!(error = %err, logs = ?sim.logs, "simulation failed; aborting before beam");
+        return;
+    }
+    info!(
+        units_consumed = ?sim.units_consumed,
+        logs = ?sim.logs,
+        "simulation succeeded"
+    );
 
     info!(payer = %payer.pubkey(), "beaming transaction...");
     let sig = client.beam(&tx).await.expect("beam failed");

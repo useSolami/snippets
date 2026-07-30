@@ -1,0 +1,16 @@
+{
+  "name": "beam-land-transaction-raw",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0",
+    "@matrixai/quic": "^2.0.9",
+    "@peculiar/x509": "^1.12.0",
+    "bs58": "^6.0.0"
+  }
+}
